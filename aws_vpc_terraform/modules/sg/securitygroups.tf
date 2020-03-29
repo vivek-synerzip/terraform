@@ -4,7 +4,8 @@
 resource "aws_security_group" "webSecurityGroup" {
   name        = "webSecurityGroup"
   description = "Allow web traffic"
- 
+  vpc_id     = "${var.vpc_id}" 
+
   ingress {
     description = "TLS from VPC"
     from_port   = 443
@@ -32,7 +33,7 @@ resource "aws_security_group" "webSecurityGroup" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  vpc_id     = "${var.vpc_id}"
+  
 }
 
 ############################################
@@ -42,7 +43,7 @@ resource "aws_security_group" "webSecurityGroup" {
 resource "aws_security_group" "dbSecurityGroup" {
   name        = "dbSecurityGroup"
   description = "Allow db traffic"
-
+  vpc_id     = "${var.vpc_id}"
   ingress {
     description = "TLS from VPC"
     from_port   = 3306
@@ -50,5 +51,5 @@ resource "aws_security_group" "dbSecurityGroup" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  vpc_id     = "${var.vpc_id}"
+ 
 }

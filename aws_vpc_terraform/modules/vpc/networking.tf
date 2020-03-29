@@ -5,6 +5,9 @@
 resource "aws_vpc" "main" {
   cidr_block       = "${var.vpc_cidr_block}"
   instance_tenancy = "${var.instance_tenancy}"
+  enable_dns_support = "true"
+  enable_dns_hostnames = "true"
+  enable_classiclink = "false"
 
   tags = {
     Name = "${var.env}_vpc"
@@ -20,11 +23,14 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "public_subnet" {
   vpc_id     = "${var.vpc_id}"
   cidr_block = "${var.public_subnet_cidr_block}"
+  map_public_ip_on_launch = true
+  availability_zone = "us-east-1a"
 
   tags = {
     Name = "${var.env}_public_subnet"
     Env  = "${var.env}"
   }
+  depends_on = ["aws_vpc.main"]
 }
 
 
@@ -35,11 +41,12 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_subnet" "private_subnet" {
   vpc_id     = "${var.vpc_id}"
   cidr_block = "${var.private_subnet_cidr_block}"
-
+  availability_zone = "us-east-1a"
   tags = {
     Name = "${var.env}_private_subnet"
     Env  = "${var.env}"
   }
+  depends_on = ["aws_vpc.main"]
 }
 
 #####################################
@@ -53,6 +60,7 @@ resource "aws_internet_gateway" "gw" {
     Name = "${var.env}_gw"
     Env  = "${var.env}"
   }
+  depends_on = ["aws_vpc.main"]
 }
 
 
@@ -71,6 +79,7 @@ resource "aws_route_table" "public_route_table" {
     Name = "Public Route Table"
     env  = "${var.env}"
   }
+  depends_on = ["aws_vpc.main","aws_internet_gateway.gw"]
 }
 
 
@@ -79,7 +88,8 @@ resource "aws_route_table" "public_route_table" {
 ##############################################
 
 resource "aws_route_table_association" "a" {
-  count = "${length(var.public_subnet_cidr_block)}"
-  subnet_id      = "${element(aws_subnet.public_subnet.*.id,count.index)}"
+  subnet_id      = "${aws_subnet.public_subnet.id}"
   route_table_id = "${aws_route_table.public_route_table.id}"
+  depends_on = ["aws_vpc.main","aws_internet_gateway.gw","aws_route_table.public_route_table"]
 }
+

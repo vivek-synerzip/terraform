@@ -6,8 +6,11 @@ variable "instance_type" {
 	default = "t2.micro"
 }
 
-variable "instance_count" {
-	default = 1
+variable "private_instance_count" {
+	default = 0
+}
+variable "public_instance_count" {
+	default = 0
 }
 
 variable "key_name" {
@@ -31,3 +34,7 @@ variable "private_subnet_id" {
 }
 
 variable "vpc_security_group_ids" {}
+
+variable "vpc_id" {
+	default = ""
+}
