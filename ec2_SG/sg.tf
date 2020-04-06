@@ -1,6 +1,6 @@
-resource "aws_security_group" "allow_rdp" {
-  name        = "allow_rdp"
-  description = "Allow rdp traffic"
+resource "aws_security_group" "myinstance" {
+  name        = "myinstance"
+  description = "security groups for my instances"
 
 
   ingress {
@@ -17,6 +17,16 @@ resource "aws_security_group" "allow_rdp" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+/*
+#Use when uing Load balancer
+ingress {
+    description = "TLS from VPC"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+   security_groups = ["${aws_security_group.elb-securitygroup.id}"]
+  }
+*/
   ingress {
     description = "TLS from VPC"
     from_port   = 22
@@ -30,4 +40,30 @@ resource "aws_security_group" "allow_rdp" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "myinstance"
+  }
+}
+
+resource "aws_security_group "elc-securitygroup" {
+  vpc_id = "${aws_vpc.main.id}"
+  name = "elb"
+  description = "security group for load balancer"
+   egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "elb"
+  }
+
 }
