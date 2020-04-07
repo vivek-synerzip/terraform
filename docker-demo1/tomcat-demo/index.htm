@@ -1,0 +1,78 @@
+<html>
+	<style type="text/css">
+		iframe {
+		/* Transformation Scale */
+		-moz-transform: scale(0.25, 0.25);
+ 	    -webkit-transform: scale(0.25, 0.25);
+	    -o-transform: scale(0.25, 0.25);
+	    -ms-transform: scale(0.25, 0.25);
+	    transform: scale(0.25, 0.25);
+
+		/* Transformation Origin */
+	    -moz-transform-origin: top left;
+    	-webkit-transform-origin: top left;
+    	-o-transform-origin: top left;
+    	-ms-transform-origin: top left;
+    	transform-origin: top left;
+
+		/* Appearance */
+    	border: solid #ccc 20px;
+		width:2020px;
+		height:1100px;
+		float:left;
+		}
+		body {
+  			background-image: radial-gradient(white, blue);
+		}
+		h1 {
+  			color: white;
+  			text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+		}
+		h4 {
+  			color: white;
+  			text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+		}
+		iframe {
+			box-shadow: 10px 10px grey;
+		}
+	</style>
+
+<head>
+<script type="text/javascript">
+function startTime()
+{
+var today=new Date();
+var myDay = today.getDay(); 
+// Array of days. 
+var weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; 
+var h=today.getHours();
+var m=today.getMinutes();
+var s=today.getSeconds();
+var date = today.getDate();
+var month = today.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
+var year =today.getFullYear();
+// add a zero in front of numbers<10
+m=checkTime(m);
+s=checkTime(s);
+var dateStr = date + "/" + month + "/" + year;
+document.getElementById('date_time').innerHTML = "Date : " +dateStr + "<br>" + weekday[myDay]+ " - "+h+" : "+m+" : "+s;
+t=setTimeout('startTime()',500);
+}
+function checkTime(i)
+{
+if (i<10)
+{
+i="0" + i;
+}
+return i;
+}
+</script>
+</head>
+
+	<body style="background-color:blue;text-align:center" onload="startTime()">
+		<h1 align="center"> Welcome to Synerzip </h1> 
+		<h4 style ="text-align: center;" id="date_time"></h4>
+		<iframe src="https://www.synerzip.com/" scrolling="no" border="0" style="margin-left:50px;margin-top:0px"></iframe>
+		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.654695174431!2d73.81967874998593!3d18.49929387459216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bfebcbbaa7d5%3A0x6793be409ed41bbb!2sSynerzip%20Softech%20India%20Private%20Limited!5e0!3m2!1sen!2sin!4v1585835754219!5m2!1sen!2sin" scrolling="no" border="0" style="margin-left:600px;margin-top:-1020px"></iframe>
+	</body>
+</html>
